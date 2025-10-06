@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  job-tracker-server:
+    build: .
+    ports:
+      - "8766:8766"
+    volumes:
+      # Mount the job-tracker.md file so changes persist
+      - ./job-tracker.md:/app/job-tracker.md
+      # Mount a data directory for any additional files
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    container_name: job-tracker-server

@@ -6,7 +6,7 @@ import urllib.parse
 from datetime import datetime
 from pathlib import Path
 
-ROOT = Path('/Users/chetan/Desktop/job-tracker')
+ROOT = Path('/app')
 MD_FILE = ROOT / 'job-tracker.md'
 
 def append_to_markdown(company: str, role: str, url: str, source: str | None = None) -> None:
@@ -99,8 +99,8 @@ def run(default_port: int = 8765):
     last_err = None
     for port in candidate_ports:
         try:
-            with socketserver.TCPServer(('127.0.0.1', port), Handler) as httpd:
-                print(f'Capture server running at http://127.0.0.1:{port}')
+            with socketserver.TCPServer(('0.0.0.0', port), Handler) as httpd:
+                print(f'Capture server running at http://0.0.0.0:{port}')
                 httpd.serve_forever()
                 return
         except OSError as e:
