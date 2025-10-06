@@ -1,0 +1,22 @@
+{
+  "name": "Job Tracker: Add to Markdown",
+  "description": "One-click: send current page to local capture server and append to job-tracker.md",
+  "version": "0.1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "Add job to Markdown"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "notifications"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
+
+
