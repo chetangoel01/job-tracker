@@ -5,9 +5,13 @@ import socketserver
 import urllib.parse
 from datetime import datetime
 from pathlib import Path
+import logging
 
 ROOT = Path('/app')
 MD_FILE = ROOT / 'job-tracker.md'
+
+# Configure basic logging for the capture server
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(levelname)s %(message)s')
 
 def append_to_markdown(company: str, role: str, url: str, source: str | None = None) -> None:
     """Append a new Inbox item as a Markdown table row.
@@ -78,6 +82,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 role = ''
 
             append_to_markdown(company, role, url, source)
+
+            logging.info(
+                "Inbox item added: company='%s', role='%s', url='%s', source='%s'",
+                company,
+                role,
+                url,
+                source,
+            )
 
             self.send_response(200)
             self._cors(); self.end_headers()

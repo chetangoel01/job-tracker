@@ -31,3 +31,4 @@ Keep this as your single source of truth. New leads get appended to the Inbox wi
 | Inbox | Tower Research Capital | Open Positions | [link](https://tower-research.com/open-positions/?gh_jid=6607630) | extension |  | 2025-10-06 18:36 |  |  |  |
 | Inbox | Old Mission Capital | Careers | [link](https://www.oldmissioncapital.com/careers/?gh_jid=6602927003) | extension |  | 2025-10-06 18:38 |  |  |  |
 | Inbox | Nuro | Software Engineer | [link](https://www.nuro.ai/careersitem?gh_jid=7066706) | extension |  | 2025-10-06 18:40 |  |  |  |
+| Inbox | iheartmedia.wd5.myworkdayjobs.com | Candidate Home | [link](https://iheartmedia.wd5.myworkdayjobs.com/en-US/External_iHM/job/Full-Stack-Engineer_Req36902) | extension |  | 2025-10-08 18:12 |  |  |  |

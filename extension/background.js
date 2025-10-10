@@ -5,14 +5,15 @@ async function sendCurrentTabToServer(tab) {
     let hostname = '';
     try { hostname = new URL(url).hostname.replace(/^www\./, ''); } catch {}
 
-    const body = {
+  const body = {
       company: hostname,
       role: title,
       url,
       source: 'extension'
     };
 
-    const ports = [8765, 8766, 8787, 8888];
+    // Prefer the host-mapped port first
+    const ports = [8766, 8765, 8787, 8888];
     let ok = false, lastErr;
     for (const p of ports) {
       try {
@@ -21,27 +22,30 @@ async function sendCurrentTabToServer(tab) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         });
-        if (resp.ok) { ok = true; break; }
+        if (resp.ok) {
+          ok = true;
+          // Visually confirm success and include which port worked
+          chrome.action.setBadgeText({ text: '✓', tabId: tab.id });
+          chrome.action.setBadgeBackgroundColor({ color: '#10B981', tabId: tab.id });
+          chrome.action.setTitle({ title: `Saved (:${p}) ✅` });
+          setTimeout(() => chrome.action.setBadgeText({ text: '', tabId: tab.id }), 1200);
+          setTimeout(() => chrome.action.setTitle({ title: 'Add job to Markdown' }), 1500);
+          try {
+            chrome.notifications.create({
+              type: 'basic',
+              iconUrl: 'icon-128.png',
+              title: 'Job saved to Inbox',
+              message: hostname ? `${hostname} (:${p})` : `Saved current tab (:${p})`,
+              priority: 1,
+              silent: true
+            });
+          } catch (_) {}
+          return; // stop after first success
+        }
         lastErr = new Error('HTTP ' + resp.status);
       } catch (e) { lastErr = e; }
     }
     if (!ok) throw lastErr || new Error('No server found');
-    chrome.action.setBadgeText({ text: '✓', tabId: tab.id });
-    chrome.action.setBadgeBackgroundColor({ color: '#10B981', tabId: tab.id });
-    const originalTitle = tab.title || '';
-    chrome.action.setTitle({ title: 'Saved to Inbox ✅' });
-    setTimeout(() => chrome.action.setBadgeText({ text: '', tabId: tab.id }), 1200);
-    setTimeout(() => chrome.action.setTitle({ title: 'Add job to Markdown' }), 1500);
-    try {
-      chrome.notifications.create({
-        type: 'basic',
-        iconUrl: 'icon-128.png',
-        title: 'Job saved to Inbox',
-        message: hostname ? `${hostname}` : 'Saved current tab',
-        priority: 1,
-        silent: true
-      });
-    } catch (_) {}
   } catch (e) {
     chrome.action.setBadgeText({ text: '!', tabId: tab.id });
     chrome.action.setBadgeBackgroundColor({ color: '#EF4444', tabId: tab.id });

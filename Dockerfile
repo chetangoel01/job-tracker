@@ -17,8 +17,8 @@ COPY job-tracker.md .
 # Create a directory for the data files
 RUN mkdir -p /app/data
 
-# Expose the port the server will run on
-EXPOSE 8766
+# Expose the default first-success port the server will bind to
+EXPOSE 8765
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
